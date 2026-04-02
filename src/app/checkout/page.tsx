@@ -40,24 +40,32 @@ export default function CheckoutPage() {
   const total = pkg.price * qty;
 
   return (
-    <main className="min-h-screen px-4 py-12 md:py-20">
-      <div className="max-w-6xl mx-auto">
-        <Link href="/" className="inline-flex items-center gap-2 text-sm text-white/50 hover:text-gold transition-colors mb-8">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <main className="min-h-screen px-4 py-12 md:py-20 relative">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-gold/[0.03] rounded-full blur-[100px]" />
+        <div className="absolute bottom-1/4 left-0 w-[300px] h-[300px] bg-gold/[0.02] rounded-full blur-[80px]" />
+      </div>
+
+      <div className="relative max-w-6xl mx-auto">
+        <Link href="/" className="group inline-flex items-center gap-2 text-sm text-white/40 hover:text-gold transition-colors mb-8">
+          <svg className="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
           Back to product
         </Link>
 
-        <h1 className="text-3xl md:text-5xl font-bold mb-2">
-          Secure <span className="text-gold">Checkout</span>
+        <h1 className="text-3xl md:text-5xl font-bold mb-2 animate-fade-in-up">
+          Secure <span className="text-gradient-gold">Checkout</span>
         </h1>
-        <p className="text-white/50 mb-12">Complete your order below</p>
+        <p className="text-white/40 mb-12 animate-fade-in-up-delay-1">Complete your order below — takes less than 2 minutes</p>
 
         <div className="grid lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2 space-y-10">
             <div>
-              <h2 className="text-xl font-bold mb-6">Select Your Package</h2>
+              <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-gold/10 text-gold text-sm font-bold">1</span>
+                Select Your Package
+              </h2>
               <div className="grid sm:grid-cols-3 gap-4">
                 {packages.map((p, i) => (
                   <button
@@ -65,25 +73,27 @@ export default function CheckoutPage() {
                     onClick={() => { setSelected(i); setQty(1); }}
                     className={`relative p-6 rounded-2xl border-2 text-left transition-all duration-300 cursor-pointer ${
                       selected === i
-                        ? "border-gold bg-gold/5 shadow-lg shadow-gold/10"
-                        : "border-white/10 bg-navy-light hover:border-white/20"
+                        ? "border-gold bg-gold/5 glow-gold"
+                        : "border-white/10 glass-card hover:border-white/20"
                     }`}
                   >
                     {p.badge && (
-                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 text-xs font-bold tracking-wider text-navy bg-gold rounded-full whitespace-nowrap">
+                      <span className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 text-xs font-bold tracking-wider rounded-full whitespace-nowrap ${
+                        p.badge === "BEST VALUE" ? "text-navy bg-gradient-to-r from-green-400 to-emerald-400" : "text-navy bg-gradient-to-r from-gold to-gold-light"
+                      }`}>
                         {p.badge}
                       </span>
                     )}
                     <div className="text-3xl font-black mb-1">{p.bottles}</div>
-                    <div className="text-sm text-white/50 mb-3">
+                    <div className="text-sm text-white/40 mb-3">
                       {p.bottles === 1 ? "Bottle" : "Bottles"}
                     </div>
                     <div className="text-2xl font-bold text-gold">${p.price}</div>
-                    <div className="text-sm text-white/40 line-through">${p.original}</div>
+                    <div className="text-sm text-white/30 line-through">${p.original}</div>
                     <div className="mt-2 text-xs font-semibold text-green-400">
                       SAVE {p.savings}%
                     </div>
-                    <div className="mt-1 text-xs text-white/40">
+                    <div className="mt-1 text-xs text-white/30">
                       ${p.perBottle.toFixed(2)} / bottle
                     </div>
                   </button>
@@ -91,65 +101,70 @@ export default function CheckoutPage() {
               </div>
             </div>
 
+            <div className="divider-gradient" />
+
             <div>
-              <h2 className="text-xl font-bold mb-6">Shipping Information</h2>
+              <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-gold/10 text-gold text-sm font-bold">2</span>
+                Shipping Information
+              </h2>
               <div className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm text-white/60 mb-1.5">First Name</label>
+                    <label className="block text-sm text-white/50 mb-1.5">First Name</label>
                     <input
                       type="text"
-                      className="w-full px-4 py-3 rounded-lg bg-navy-light border border-white/10 text-white placeholder-white/30 focus:border-gold focus:outline-none transition-colors"
+                      className="w-full px-4 py-3 rounded-xl bg-navy-light/80 border border-white/10 text-white placeholder-white/20 focus:border-gold focus:outline-none transition-all duration-300"
                       placeholder="John"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-white/60 mb-1.5">Last Name</label>
+                    <label className="block text-sm text-white/50 mb-1.5">Last Name</label>
                     <input
                       type="text"
-                      className="w-full px-4 py-3 rounded-lg bg-navy-light border border-white/10 text-white placeholder-white/30 focus:border-gold focus:outline-none transition-colors"
+                      className="w-full px-4 py-3 rounded-xl bg-navy-light/80 border border-white/10 text-white placeholder-white/20 focus:border-gold focus:outline-none transition-all duration-300"
                       placeholder="Doe"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm text-white/60 mb-1.5">Email Address</label>
+                  <label className="block text-sm text-white/50 mb-1.5">Email Address</label>
                   <input
                     type="email"
-                    className="w-full px-4 py-3 rounded-lg bg-navy-light border border-white/10 text-white placeholder-white/30 focus:border-gold focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-navy-light/80 border border-white/10 text-white placeholder-white/20 focus:border-gold focus:outline-none transition-all duration-300"
                     placeholder="john@example.com"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-white/60 mb-1.5">Shipping Address</label>
+                  <label className="block text-sm text-white/50 mb-1.5">Shipping Address</label>
                   <input
                     type="text"
-                    className="w-full px-4 py-3 rounded-lg bg-navy-light border border-white/10 text-white placeholder-white/30 focus:border-gold focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-navy-light/80 border border-white/10 text-white placeholder-white/20 focus:border-gold focus:outline-none transition-all duration-300"
                     placeholder="123 Main Street"
                   />
                 </div>
                 <div className="grid sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-sm text-white/60 mb-1.5">City</label>
+                    <label className="block text-sm text-white/50 mb-1.5">City</label>
                     <input
                       type="text"
-                      className="w-full px-4 py-3 rounded-lg bg-navy-light border border-white/10 text-white placeholder-white/30 focus:border-gold focus:outline-none transition-colors"
+                      className="w-full px-4 py-3 rounded-xl bg-navy-light/80 border border-white/10 text-white placeholder-white/20 focus:border-gold focus:outline-none transition-all duration-300"
                       placeholder="New York"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-white/60 mb-1.5">State</label>
+                    <label className="block text-sm text-white/50 mb-1.5">State</label>
                     <input
                       type="text"
-                      className="w-full px-4 py-3 rounded-lg bg-navy-light border border-white/10 text-white placeholder-white/30 focus:border-gold focus:outline-none transition-colors"
+                      className="w-full px-4 py-3 rounded-xl bg-navy-light/80 border border-white/10 text-white placeholder-white/20 focus:border-gold focus:outline-none transition-all duration-300"
                       placeholder="NY"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-white/60 mb-1.5">ZIP Code</label>
+                    <label className="block text-sm text-white/50 mb-1.5">ZIP Code</label>
                     <input
                       type="text"
-                      className="w-full px-4 py-3 rounded-lg bg-navy-light border border-white/10 text-white placeholder-white/30 focus:border-gold focus:outline-none transition-colors"
+                      className="w-full px-4 py-3 rounded-xl bg-navy-light/80 border border-white/10 text-white placeholder-white/20 focus:border-gold focus:outline-none transition-all duration-300"
                       placeholder="10001"
                     />
                   </div>
@@ -157,31 +172,36 @@ export default function CheckoutPage() {
               </div>
             </div>
 
+            <div className="divider-gradient" />
+
             <div>
-              <h2 className="text-xl font-bold mb-6">Payment Details</h2>
+              <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-gold/10 text-gold text-sm font-bold">3</span>
+                Payment Details
+              </h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm text-white/60 mb-1.5">Card Number</label>
+                  <label className="block text-sm text-white/50 mb-1.5">Card Number</label>
                   <input
                     type="text"
-                    className="w-full px-4 py-3 rounded-lg bg-navy-light border border-white/10 text-white placeholder-white/30 focus:border-gold focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-navy-light/80 border border-white/10 text-white placeholder-white/20 focus:border-gold focus:outline-none transition-all duration-300"
                     placeholder="4242 4242 4242 4242"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm text-white/60 mb-1.5">Expiry Date</label>
+                    <label className="block text-sm text-white/50 mb-1.5">Expiry Date</label>
                     <input
                       type="text"
-                      className="w-full px-4 py-3 rounded-lg bg-navy-light border border-white/10 text-white placeholder-white/30 focus:border-gold focus:outline-none transition-colors"
+                      className="w-full px-4 py-3 rounded-xl bg-navy-light/80 border border-white/10 text-white placeholder-white/20 focus:border-gold focus:outline-none transition-all duration-300"
                       placeholder="MM/YY"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-white/60 mb-1.5">CVC</label>
+                    <label className="block text-sm text-white/50 mb-1.5">CVC</label>
                     <input
                       type="text"
-                      className="w-full px-4 py-3 rounded-lg bg-navy-light border border-white/10 text-white placeholder-white/30 focus:border-gold focus:outline-none transition-colors"
+                      className="w-full px-4 py-3 rounded-xl bg-navy-light/80 border border-white/10 text-white placeholder-white/20 focus:border-gold focus:outline-none transition-all duration-300"
                       placeholder="123"
                     />
                   </div>
@@ -192,28 +212,28 @@ export default function CheckoutPage() {
 
           <div className="lg:col-span-1">
             <div className="sticky top-8 space-y-6">
-              <div className="p-6 rounded-2xl bg-navy-light border border-white/10">
+              <div className="p-6 rounded-2xl glass border border-white/10 gradient-border glow-gold">
                 <h3 className="font-bold text-lg mb-4">Order Summary</h3>
                 <div className="flex gap-4 mb-4">
                   <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-gold/20 to-gold/5 flex items-center justify-center shrink-0">
-                    <svg className="w-10 h-10 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-10 h-10 text-gold drop-shadow-[0_0_10px_rgba(212,168,83,0.4)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
                   <div>
                     <div className="font-bold">APEX PRE</div>
-                    <div className="text-sm text-white/50">Elite Pre-Workout Formula</div>
-                    <div className="text-sm text-white/50">
+                    <div className="text-sm text-white/40">Elite Pre-Workout Formula</div>
+                    <div className="text-sm text-white/40">
                       {pkg.bottles} {pkg.bottles === 1 ? "bottle" : "bottles"} per set
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 mb-4">
-                  <label className="text-sm text-white/60">Qty:</label>
+                  <label className="text-sm text-white/50">Qty:</label>
                   <select
                     value={qty}
                     onChange={(e) => setQty(Number(e.target.value))}
-                    className="px-3 py-1.5 rounded-lg bg-navy border border-white/10 text-white text-sm focus:border-gold focus:outline-none"
+                    className="px-3 py-1.5 rounded-lg bg-navy border border-white/10 text-white text-sm focus:border-gold focus:outline-none cursor-pointer"
                   >
                     {[1, 2, 3, 4, 5].map((n) => (
                       <option key={n} value={n}>
@@ -222,24 +242,24 @@ export default function CheckoutPage() {
                     ))}
                   </select>
                 </div>
-                <div className="space-y-2 text-sm border-t border-white/10 pt-4">
-                  <div className="flex justify-between text-white/60">
+                <div className="space-y-2.5 text-sm border-t border-white/10 pt-4">
+                  <div className="flex justify-between text-white/50">
                     <span>Subtotal</span>
                     <span>${total.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-white/60">
+                  <div className="flex justify-between text-white/50">
                     <span>Shipping</span>
-                    <span className="text-green-400">FREE</span>
+                    <span className="text-green-400 font-semibold">FREE</span>
                   </div>
-                  <div className="flex justify-between text-white/40 line-through">
+                  <div className="flex justify-between text-white/30 line-through">
                     <span>Regular price</span>
                     <span>${(pkg.original * qty).toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between font-bold text-lg border-t border-white/10 pt-3">
                     <span>Total</span>
-                    <span className="text-gold">${total.toFixed(2)}</span>
+                    <span className="text-gradient-gold text-xl">${total.toFixed(2)}</span>
                   </div>
-                  <div className="text-xs text-green-400 text-right">
+                  <div className="text-xs text-green-400 text-right font-semibold">
                     You save ${((pkg.original - pkg.price) * qty).toFixed(2)}!
                   </div>
                 </div>
@@ -247,7 +267,7 @@ export default function CheckoutPage() {
 
               <Link
                 href="/thank-you"
-                className="animate-pulse-gold block w-full py-4 text-center text-lg font-bold text-navy bg-gradient-to-r from-gold to-gold-light rounded-lg hover:from-gold-light hover:to-gold transition-all duration-300 transform hover:scale-[1.02]"
+                className="group relative block w-full py-4 text-center text-lg font-bold text-navy bg-gradient-to-r from-gold to-gold-light rounded-xl hover:from-gold-light hover:to-gold transition-all duration-300 transform hover:scale-[1.02] glow-gold-strong"
               >
                 COMPLETE ORDER →
               </Link>
@@ -281,13 +301,17 @@ export default function CheckoutPage() {
                 ].map((badge) => (
                   <div
                     key={badge.text}
-                    className="flex flex-col items-center gap-2 p-3 rounded-xl bg-navy-light border border-white/5 text-center"
+                    className="flex flex-col items-center gap-2 p-3 rounded-xl glass-card border border-white/5 text-center"
                   >
-                    <div className="text-gold">{badge.icon}</div>
-                    <span className="text-xs text-white/50">{badge.text}</span>
+                    <div className="text-gold/70">{badge.icon}</div>
+                    <span className="text-xs text-white/40">{badge.text}</span>
                   </div>
                 ))}
               </div>
+
+              <p className="text-center text-xs text-white/20">
+                Your payment info is encrypted and secure. We never store your card details.
+              </p>
             </div>
           </div>
         </div>
